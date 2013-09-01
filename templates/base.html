@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<style type="text/css">
+			.service {
+				display: block;
+			}
+			.data div {
+				display: inline-block;
+			}
+			.metric {
+				font-family: helvetica;
+				font-size: 36px;
+				font-weight: bold;
+			}
+			.metric .goal {
+				font-size: 18px;
+				font-weight: normal;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>{{ name }}</h1>
+		{% if fitbit != None %}
+			{% include "fitbit.html" %}
+		{% endif %}
+		{% if withings != None %}
+			{% include "withings.html" %}
+		{% endif %}
+	</body>
+</html>
