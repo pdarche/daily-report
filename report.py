@@ -25,8 +25,9 @@ class ReportGenerator():
 	"""
 
 	def __init__(self, name, options):
-		self.name = name
 		self.services = { 
+			"name" : name,
+			"date" : date.today().strftime('%A, %B %d'),
 			"fitbit" : None,
 			"withings" : None,
 			"open_paths" : None,
@@ -43,12 +44,11 @@ class ReportGenerator():
 		}
 		# if service is in services.keys()
 		# fetch and set that services data
-
 		for service in options:
 			if service in self.services:
 				self.services[service] = self.service_data[service]()
 
-		self.services = dict(self.services.items() + {'name' : self.name}.items())
+		# self.services = dict(self.services.items() + {'name' : self.name}.items())
 		self.send_mail()
 
 	def add_fitbit(self):
@@ -67,9 +67,11 @@ class ReportGenerator():
 			"cals_out_goal" : response_dict["goals"]["caloriesOut"],
 			"floors" : response_dict["summary"]["floors"],
 			"floors_goal" : response_dict["goals"]["floors"]
-		}
-		# steps = response_dict['summary']['steps']
+		}		
 		return fitbit_data
+
+	def add_withings(self):
+		
 
 	def send_mail(self):
 		EMAIL_TO = "pdarche@gmail.com"

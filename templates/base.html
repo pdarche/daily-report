@@ -19,7 +19,7 @@
 		</style>
 	</head>
 	<body>
-		<h1>{{ name }}</h1>
+		<h1 style="margin-bottom:5px; border-bottom:1px solid #ccc">{{ name }}'s report for {{ date }}</h1>
 		{% if fitbit != None %}
 			{% include "fitbit.html" %}
 		{% endif %}
