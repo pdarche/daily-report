@@ -1,0 +1,10 @@
+{% block flickr %}
+	<div class="service" style="border-bottom: 1px solid #ccc" >
+		<h2 style="font-size:38px; margin: 20px 0px 0px 0px">Flickr (meals)</h2>
+		<div>
+			{% for meal in flickr.meals|reverse %}
+				<div class="metric" style="display: block; font-family: helvetica; font-size: 32px; margin-right:5px;">{{ meal.title }}</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

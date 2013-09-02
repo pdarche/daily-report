@@ -3,6 +3,7 @@ from settings import *
 # service wrapper imports 
 import fitbit
 import foursquare
+import flickr_api
 
 # stdlib imports 
 import json
@@ -43,7 +44,7 @@ class ReportGenerator():
 			"withings" : self.add_withings,
 			"open_paths" : None,
 			"foursquare" : self.add_foursquare,
-			"flickr" : None	
+			"flickr" : self.add_flickr	
 		}
 		# if service is in services.keys()
 		# fetch and set that services data
@@ -53,7 +54,6 @@ class ReportGenerator():
 
 		# self.services = dict(self.services.items() + {'name' : self.name}.items())
 		self.send_mail()
-		# self.add_foursquare()
 
 	def add_fitbit(self):
 		f = fitbit.FitBit()
@@ -84,13 +84,23 @@ class ReportGenerator():
 		today_string = date.today().strftime("%m/%d/%Y")
 		today = int(time.mktime(datetime.datetime.strptime(today_string, "%m/%d/%Y").timetuple()))
 		checkins = client.users.checkins(params={"afterTimestamp": today})["checkins"]["items"]
-		for checkin in checkins:
-			lat = checkin["venue"]["location"]["lat"]
-			lnf = checkin["venue"]["location"]["lng"]
-			name = checkin["venue"]["name"]
-
-		print checkins
 		return { "checkins":checkins }
+
+		# TODO: figure out how to embed images
+		# for checkin in checkins:
+		# 	lat = checkin["venue"]["location"]["lat"]
+		# 	lnf = checkin["venue"]["location"]["lng"]
+		# 	name = checkin["venue"]["name"]
+
+	def add_flickr(self):
+		today_string = date.today().strftime("%m/%d/%Y")
+		today = int(time.mktime(datetime.datetime.strptime(today_string, "%m/%d/%Y").timetuple()))		
+		flickr_api.set_keys(api_key = FLICKR_API_KEY, api_secret = FLICKR_API_SECRET)
+		a = flickr_api.auth.AuthHandler.load('flickr_auth')
+		flickr_api.set_auth_handler(a)
+		user = flickr_api.test.login()
+		meals = user.getPhotos(min_taken_date=today)
+		return {"meals" : meals}
 
 	def send_mail(self):
 		EMAIL_TO = "pdarche@gmail.com"
@@ -124,7 +134,7 @@ class ReportGenerator():
 
 		return tmpl.render(self.services)
 
-report = ReportGenerator('Peter Darche', ['fitbit', 'foursquare'])
+report = ReportGenerator('Peter Darche', ['fitbit', 'foursquare', 'flickr'])
 
 
 

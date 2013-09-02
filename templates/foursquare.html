@@ -1,9 +1,9 @@
 {% block foursquare %}
 	<div class="service" style="border-bottom: 1px solid #ccc" >
-		<h2 style="font-size:38px; margin: 20px 0px 0px 0px">Foursquare</h2>
+		<h2 style="font-size:38px; margin: 20px 0px 0px 0px">Foursquare (venues)</h2>
 		<div>
-			{% for checkin in foursquare.checkins %}
-				<div class="metric" style="display: block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ checkin.venue.name }}</div>
+			{% for checkin in foursquare.checkins|reverse %}
+				<div class="metric" style="display: block; font-family: helvetica; font-size: 32px; margin-right:5px;">{{ checkin.venue.name }}</div>
 			{% endfor %}
 		</div>
 	</div>
