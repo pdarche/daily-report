@@ -10,6 +10,7 @@ import json
 from datetime import date
 import datetime
 import time
+import sys
 
 #template imports
 from jinja2 import Template
@@ -20,7 +21,6 @@ from jinja2.environment import Environment
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
 
 class ReportGenerator():
 	"""
@@ -36,7 +36,8 @@ class ReportGenerator():
 			"withings" : None,
 			"open_paths" : None,
 			"foursquare" : None,
-			"flickr" : None
+			"flickr" : None,
+			"github" : None
 		}
 
 		self.service_data = {
@@ -44,7 +45,8 @@ class ReportGenerator():
 			"withings" : self.add_withings,
 			"open_paths" : None,
 			"foursquare" : self.add_foursquare,
-			"flickr" : self.add_flickr	
+			"flickr" : self.add_flickr,
+			"github" : self.add_github
 		}
 		# if service is in services.keys()
 		# fetch and set that services data
@@ -102,13 +104,16 @@ class ReportGenerator():
 		meals = user.getPhotos(min_taken_date=today)
 		return {"meals" : meals}
 
+	def add_github(self):
+		pass
+
 	def send_mail(self):
 		EMAIL_TO = "pdarche@gmail.com"
 		EMAIL_FROM = "pdarche@gmail.com"
-		EMAIL_SUBJECT = "Test Fitbit"
+		EMAIL_SUBJECT = "Daily Report for %s" % date.today().strftime('%A, %B %d')
 
 		msg = MIMEMultipart('alternative')
-		msg['Subject'] = "Test Fitbit"
+		msg['Subject'] = EMAIL_SUBJECT
 		msg['From'] = EMAIL_FROM
 		msg['To'] = EMAIL_TO
 
@@ -134,7 +139,7 @@ class ReportGenerator():
 
 		return tmpl.render(self.services)
 
-report = ReportGenerator('Peter Darche', ['fitbit', 'foursquare', 'flickr'])
+report = ReportGenerator('Peter Darche', sys.argv[1:])
 
 
 
