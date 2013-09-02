@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from settings import *
 
 # service wrapper imports 
