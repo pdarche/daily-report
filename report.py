@@ -179,5 +179,4 @@ class ReportGenerator():
 
 		return tmpl.render(self.services)
 
-# report = ReportGenerator('Piotr Darchovskavitch', sys.argv[1:])
-report = ReportGenerator('Piotr Darchovskavitch', ['fitbit', 'foursquare', 'flickr'])
+report = ReportGenerator('Piotr Darchovskavitch', sys.argv[1:])
