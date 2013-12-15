@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from settings import *
+import requests
 
 # service wrapper imports 
 import fitbit
@@ -55,27 +56,65 @@ class ReportGenerator():
 			if service in self.services:
 				self.services[service] = self.service_data[service]()
 
-		# self.services = dict(self.services.items() + {'name' : self.name}.items())
 		self.send_mail()
 
 	def add_fitbit(self):
 		f = fitbit.FitBit()
 		token = 'oauth_token_secret=%s&oauth_token=%s' % (FITBIT_ACCESS_SECRET, FITBIT_ACCESS_KEY)
 		today = date.today().strftime('%Y-%m-%d')
-		resource_url = '/1/user/-/activities/date/%s.json' % today
-		response = f.ApiCall(token, apiCall=resource_url)
-		response_dict = json.loads(response)
-		fitbit_data = {
-			"steps" : response_dict["summary"]["steps"],
-			"steps_goal" : response_dict["goals"]["steps"],
-			"distance" : response_dict["summary"]["distances"][0]["distance"],
-			"distance_goal" : response_dict["goals"]["distance"],
-			"cals_out" : response_dict["summary"]["caloriesOut"],
-			"cals_out_goal" : response_dict["goals"]["caloriesOut"],
-			"floors" : response_dict["summary"]["floors"],
-			"floors_goal" : response_dict["goals"]["floors"]
-		}		
-		return fitbit_data
+		activities_url = '/1/user/-/activities/date/%s.json' % today
+		foods_url = '/1/user/-/foods/log/date/%s.json' % today
+		sleep_url = '/1/user/-/sleep/date/%s.json' % today
+		foods = self._fetch_fitibit(f, token, foods_url)
+		activities = self._fetch_fitibit(f, token, activities_url)
+		sleep = self._fetch_fitibit(f, token, sleep_url)
+
+		return {
+			"logged_foods": self._prep_foods(foods['foods']),
+			"activities": self._pre_activities(activities),
+			"sleep": self._prep_sleep(sleep['sleep'])
+		}
+
+	def _fetch_fitibit(self, f, token, url):
+		response = f.ApiCall(token, apiCall=url)
+		return json.loads(response)
+
+	def _pre_activities(self, activities):
+		return {
+			"steps" : activities["summary"]["steps"],
+			"steps_goal" : activities["goals"]["steps"],
+			"distance" : activities["summary"]["distances"][0]["distance"],
+			"distance_goal" : activities["goals"]["distance"],
+			"cals_out" : activities["summary"]["caloriesOut"],
+			"cals_out_goal" : activities["goals"]["caloriesOut"],
+			"floors" : activities["summary"]["floors"],
+			"floors_goal" : activities["goals"]["floors"]
+		}
+
+	def _prep_foods(self, foods):
+		logged_foods = map(lambda f: f['loggedFood']['name'], foods)
+		nutritionalValues = map(lambda f: f['nutritionalValues'], foods)
+		return {
+			"foods" : logged_foods,
+			"totals" : {
+				"carbs": sum(f['carbs'] for f in nutritionalValues),
+				"fiber": sum(f['fiber'] for f in nutritionalValues),
+				"sodium": sum(f['sodium'] for f in nutritionalValues),
+				"calories": sum(f['calories'] for f in nutritionalValues),
+				"fat": sum(f['fat'] for f in nutritionalValues),
+				"protein": sum(f['protein'] for f in nutritionalValues)
+			}
+		}
+
+	def _prep_sleep(self, sleep):
+		return {
+			"mins_to_sleep": sleep[0]['minutesToFallAsleep'],
+			"awakenings_count": sleep[0]['awakeningsCount'],
+			"minutes_awake": sleep[0]['minutesAwake'],
+			"hrs_sleep": round(float(sleep[0]['minutesAsleep'])/60,2),
+			"efficiency": sleep[0]['efficiency'],
+			"bed_time": sleep[0]['startTime']
+		}
 
 	def add_withings(self):
 		# stuff to add here
@@ -118,7 +157,7 @@ class ReportGenerator():
 		msg['From'] = EMAIL_FROM
 		msg['To'] = EMAIL_TO
 
-		text = "Hi!\nHow are you?\nHere is the link you wanted:\nhttp://www.python.org"
+		text = "Some neat text"
 		html = self.render_templates()
 
 		part1 = MIMEText(text, 'plain')
@@ -140,7 +179,4 @@ class ReportGenerator():
 
 		return tmpl.render(self.services)
 
-report = ReportGenerator('Peter Darche', sys.argv[1:])
-
-
-
+report = ReportGenerator('Piotr Darchovskavitch', sys.argv[1:])

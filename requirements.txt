@@ -1,5 +1,6 @@
 fitbit
 jinja2
+requests
 matplotlib
 flickr_api
 foursquare

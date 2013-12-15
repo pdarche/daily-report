@@ -1,11 +1,30 @@
 {% block fitbit %}
 	<div class="service" style="border-bottom: 1px solid #ccc; padding-bottom:10px;" >
-		<h2 style="font-size:38px; margin: 30px 0px 0px 0px">Fitbit (physical activity)</h2>
+		<h2 style="font-size:38px; margin: 30px 0px 0px 0px">Fitbit</h2>
+		<h3>Physical Activity</h3>
 		<div class="data">
-			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.steps }}<span class="goal" style="font-size: 18px; font-weight: normal;"> /{{ fitbit.steps_goal }} steps</span></div>
-			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.distance }}<span class="goal" style="font-size: 18px; font-weight: normal;"> /{{ fitbit.distance_goal }} miles</span></div>
-			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.cals_out }}<span class="goal" style="font-size: 18px; font-weight: normal;"> /{{ fitbit.cals_out_goal }} cals</span></div>
-			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.floors }}<span class="goal" style="font-size: 18px; font-weight: normal;"> /{{ fitbit.floors_goal }} floors</span></div>
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.activities.steps }}<span class="goal" style="font-size: 18px; font-weight: normal;"> /{{ fitbit.activities.steps_goal }} steps</span></div>
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.activities.distance }}<span class="goal" style="font-size: 18px; font-weight: normal;"> /{{ fitbit.activities.distance_goal }} miles</span></div>
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.activities.cals_out }}<span class="goal" style="font-size: 18px; font-weight: normal;"> /{{ fitbit.activities.cals_out_goal }} cals</span></div>
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.activities.floors }}<span class="goal" style="font-size: 18px; font-weight: normal;"> /{{ fitbit.activities.floors_goal }} floors</span></div>
+		</div>
+		<h3>Nutrition</h3>
+		<div class="data">
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.logged_foods.totals.calories }}<span class="goal" style="font-size: 18px; font-weight: normal;">/2500 calories</span></div>
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.logged_foods.totals.fat }}<span class="goal" style="font-size: 18px; font-weight: normal;">/70g fat</span></div>
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.logged_foods.totals.protein }}<span class="goal" style="font-size: 18px; font-weight: normal;">/71g protein</span></div>
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.logged_foods.totals.carbs }}<span class="goal" style="font-size: 18px; font-weight: normal;">/210g carbs</span></div>
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.logged_foods.totals.fiber }}<span class="goal" style="font-size: 18px; font-weight: normal;">/29g fiber</span></div>
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.logged_foods.totals.sodium }}<span class="goal" style="font-size: 18px; font-weight: normal;">/3000mg sodium</span></div>
+		</div>
+		<h3></h3>
+		<div class="data">
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.sleep.hrs_sleep }}<span class="goal" style="font-size: 18px; font-weight: normal;">/8 hrs</span></div>
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.sleep.bed_time }}<span class="goal" style="font-size: 18px; font-weight: normal;">/12:00 am</span></div>			
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.sleep.mins_to_sleep }}<span class="goal" style="font-size: 18px; font-weight: normal;">/0 mins to sleep</span></div>			
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.sleep.minutes_awake }}<span class="goal" style="font-size: 18px; font-weight: normal;">/0 minutes awake</span></div>
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.sleep.awakenings_count }}<span class="goal" style="font-size: 18px; font-weight: normal;">/0 times awake</span></div>
+			<div class="metric" style="display: inline-block; font-family: helvetica; font-size: 32px; font-weight: bold; margin-right:5px;">{{ fitbit.sleep.efficiency }}<span class="goal" style="font-size: 18px; font-weight: normal;">/100% efficient</span></div>
 		</div>
 	</div>
 {% endblock %}
