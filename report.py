@@ -99,7 +99,7 @@ class ReportGenerator():
 		today_string = date.today().strftime("%m/%d/%Y")
 		today = int(time.mktime(datetime.datetime.strptime(today_string, "%m/%d/%Y").timetuple()))		
 		flickr_api.set_keys(api_key = FLICKR_API_KEY, api_secret = FLICKR_API_SECRET)
-		a = flickr_api.auth.AuthHandler.load('flickr_auth')
+		a = flickr_api.auth.AuthHandler.load('/Users/pdarche/Desktop/daily-report/flickr_auth')
 		flickr_api.set_auth_handler(a)
 		user = flickr_api.test.login()
 		meals = user.getPhotos(min_taken_date=today)
@@ -135,7 +135,7 @@ class ReportGenerator():
 
 	def render_templates(self):
 		env = Environment()
-		env.loader = FileSystemLoader('./templates')
+		env.loader = FileSystemLoader('/Users/pdarche/Desktop/daily-report/templates')
 		tmpl = env.get_template('base.html')
 
 		return tmpl.render(self.services)
